@@ -1,5 +1,6 @@
 # ASMA
 ASMA is an acronym for Automated Static Malware Analysis.
+
     _   ___ __  __   _   
    /_\ / __|  \/  | /_\  
   / _ \\__ \ |\/| |/ _ \ 
