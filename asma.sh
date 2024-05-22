@@ -6,13 +6,10 @@ echo "   /_\ / __|  \/  | /_\  "
 echo "  / _ \\__ \ |\/| |/ _ \ "
 echo " /_/ \_\___/_|  |_/_/ \_\\"
 echo ""
-echo "Automatation tool for Malware Static Analysis based on Linux"
-echo "original repo : https://github.com/runmalware/ASMA"
-
 
 # Function to check and install required tools
 check_and_install_tools() {
-    tools=("file" "strings" "pev" "exiftool" "yara" "sha3sum")
+    tools=("file" "strings" "pev" "exiftool" "yara" "sha3sum" "git")
     for tool in "${tools[@]}"; do
         if ! command -v "$tool" &> /dev/null; then
             echo "$tool is not installed. Do you want to install it? (yes/no)"
@@ -27,8 +24,32 @@ check_and_install_tools() {
     done
 }
 
+# Function to check and update YARA rules repository
+check_yara_repository() {
+    repo_url="https://github.com/VirusTotal/yara"
+    repo_path="/path/to/virustotal/yara"  # Replace with the actual path where the repository is cloned
+
+    if [ ! -d "$repo_path" ]; then
+        echo "YARA rules repository not found. Cloning repository..."
+        git clone "$repo_url" "$repo_path"
+    else
+        cd "$repo_path" || exit
+        git fetch origin
+        local_changes=$(git status --porcelain)
+        if [ -z "$local_changes" ]; then
+            echo "YARA rules repository is up-to-date."
+        else
+            echo "YARA rules repository has local changes. Updating repository..."
+            git pull origin master
+        fi
+    fi
+}
+
 # Check and install required tools
 check_and_install_tools
+
+# Check and update YARA rules repository
+check_yara_repository
 
 # Prompt for malware filename
 echo "Enter the path to the malware file:"
@@ -79,7 +100,7 @@ fi
 # Running YARA rules from VirusTotal YARA repository
 if [ -x "$(command -v yara)" ]; then
     echo "YARA Analysis:" >> "$output_file"
-    yara /path/to/virustotal/yara/rules/* "$malware_file" >> "$output_file"  # Replace with actual path to VirusTotal YARA rules
+    yara "$repo_path/rules/*" "$malware_file" >> "$output_file"  # Replace with actual path to YARA rules
     echo "" >> "$output_file"
 fi
 

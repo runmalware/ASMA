@@ -1,9 +1,5 @@
 # ASMA
 ASMA is an acronym for Automated Static Malware Analysis.
-    _   ___ __  __   _   
-   /_\ / __|  \/  | /_\  
-  / _ \\__ \ |\/| |/ _ \ 
- /_/ \_\___/_|  |_/_/ \_\
 
 
 ### **STP : Situation > Target > Proposal** ###
@@ -31,6 +27,8 @@ Contributor can add more up on your idea.
 
 
 ### **How to use script** ###
+Tested on REMnux 20.04
+
 1. Make sure your REMnux connected to internet
 2. Ensure you replace /path/to/virustotal/yara/rules/* with the actual path to your YARA rules from the VirusTotal repository.
 2. open terminal and command 
